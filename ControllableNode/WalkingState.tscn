@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://p6qhjq3mcpqd"]
+
+[ext_resource type="Script" uid="uid://dkhnaralk4525" path="res://ControllableNode/WalkingState.gd" id="1_wsoia"]
+
+[node name="WalkingState" type="Node"]
+script = ExtResource("1_wsoia")

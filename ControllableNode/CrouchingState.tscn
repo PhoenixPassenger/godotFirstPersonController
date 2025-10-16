@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://o5deljspijnr"]
+
+[ext_resource type="Script" uid="uid://c7ddm12rthrtq" path="res://ControllableNode/CrouchingState.gd" id="1_ghn4o"]
+
+[node name="CrouchingState" type="Node"]
+script = ExtResource("1_ghn4o")
