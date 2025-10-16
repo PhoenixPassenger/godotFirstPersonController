@@ -1,0 +1,54 @@
+[gd_scene load_steps=12 format=3 uid="uid://qoidx5aoff51"]
+
+[ext_resource type="Script" uid="uid://2tdqdnedx4jw" path="res://player/player.gd" id="1_xbw16"]
+[ext_resource type="PackedScene" uid="uid://g6qi64l1x55j" path="res://ControllableNode/ControllableNodeStateMachine.tscn" id="2_t4ai6"]
+[ext_resource type="PackedScene" uid="uid://dofrxt1rskxbd" path="res://ControllableNode/StandingState.tscn" id="4_autw8"]
+[ext_resource type="PackedScene" uid="uid://o5deljspijnr" path="res://ControllableNode/CrouchingState.tscn" id="5_0ebo4"]
+[ext_resource type="PackedScene" uid="uid://p6qhjq3mcpqd" path="res://ControllableNode/WalkingState.tscn" id="5_k8ao7"]
+[ext_resource type="PackedScene" uid="uid://c4kpxffc3edxs" path="res://ControllableNode/AirState.tscn" id="6_llcyj"]
+[ext_resource type="PackedScene" uid="uid://cqh2t0l6w66l3" path="res://ControllableNode/SprintingState.tscn" id="7_m0dlo"]
+[ext_resource type="PackedScene" uid="uid://dsxqkmdgnab46" path="res://ControllableNode/CrouchIdleState.tscn" id="8_m0dlo"]
+[ext_resource type="Script" uid="uid://gn5awmnymqy3" path="res://ControllableNode/CrouchIdleState.gd" id="9_cjueh"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kqu6x"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_oul6g"]
+height = 1.0
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_xbw16")
+
+[node name="StandingCollision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_kqu6x")
+
+[node name="CrouchingCollision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("CapsuleShape3D_oul6g")
+
+[node name="Head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+
+[node name="Eyes" type="Node3D" parent="Head"]
+
+[node name="Camera3D" type="Camera3D" parent="Head/Eyes"]
+fov = 90.0
+
+[node name="StandUpCheck" type="RayCast3D" parent="."]
+target_position = Vector3(0, 2, 0)
+
+[node name="ControlabbleNodeStateMachine" parent="." node_paths=PackedStringArray("initial_state") instance=ExtResource("2_t4ai6")]
+initial_state = NodePath("StandingState")
+
+[node name="StandingState" parent="ControlabbleNodeStateMachine" instance=ExtResource("4_autw8")]
+
+[node name="CrouchingState" parent="ControlabbleNodeStateMachine" instance=ExtResource("5_0ebo4")]
+
+[node name="WalkingState" parent="ControlabbleNodeStateMachine" instance=ExtResource("5_k8ao7")]
+
+[node name="AirState" parent="ControlabbleNodeStateMachine" instance=ExtResource("6_llcyj")]
+
+[node name="SprintingState" parent="ControlabbleNodeStateMachine" instance=ExtResource("7_m0dlo")]
+
+[node name="CrouchIdleState" parent="ControlabbleNodeStateMachine" instance=ExtResource("8_m0dlo")]
+script = ExtResource("9_cjueh")

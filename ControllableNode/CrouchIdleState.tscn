@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dsxqkmdgnab46"]
+
+[ext_resource type="Script" uid="uid://gn5awmnymqy3" path="res://ControllableNode/CrouchIdleState.gd" id="1_hjoo8"]
+
+[node name="CrouchIdleState" type="Node"]
+script = ExtResource("1_hjoo8")
