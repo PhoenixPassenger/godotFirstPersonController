@@ -10,7 +10,6 @@ var previous_state: State = null
 @export var initial_state: State
 
 func _ready() -> void:
-	# Wait for owner to be ready
 	await owner.ready
 	
 	# Initialize all states
