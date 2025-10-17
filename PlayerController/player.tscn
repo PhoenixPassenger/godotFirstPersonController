@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://qoidx5aoff51"]
+[gd_scene load_steps=12 format=3 uid="uid://qoidx5aoff51"]
 
 [ext_resource type="PackedScene" uid="uid://g6qi64l1x55j" path="res://ControllableNode/ControllableNodeStateMachine.tscn" id="2_t4ai6"]
 [ext_resource type="PackedScene" uid="uid://dofrxt1rskxbd" path="res://ControllableNode/StandingState.tscn" id="4_autw8"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://p6qhjq3mcpqd" path="res://ControllableNode/WalkingState.tscn" id="5_k8ao7"]
 [ext_resource type="PackedScene" uid="uid://c4kpxffc3edxs" path="res://ControllableNode/AirState.tscn" id="6_llcyj"]
 [ext_resource type="PackedScene" uid="uid://cqh2t0l6w66l3" path="res://ControllableNode/SprintingState.tscn" id="7_m0dlo"]
+[ext_resource type="PackedScene" uid="uid://cdb5fyom1n74i" path="res://PlayerController/PlayerMovement.tscn" id="8_cjueh"]
 [ext_resource type="PackedScene" uid="uid://dsxqkmdgnab46" path="res://ControllableNode/CrouchIdleState.tscn" id="8_m0dlo"]
 
 [sub_resource type="GDScript" id="GDScript_llcyj"]
@@ -266,3 +267,5 @@ initial_state = NodePath("StandingState")
 [node name="SprintingState" parent="ControlabbleNodeStateMachine" instance=ExtResource("7_m0dlo")]
 
 [node name="CrouchIdleState" parent="ControlabbleNodeStateMachine" instance=ExtResource("8_m0dlo")]
+
+[node name="PlayerMovement" parent="." instance=ExtResource("8_cjueh")]

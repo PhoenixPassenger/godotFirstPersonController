@@ -7,7 +7,7 @@ func enter() -> void:
 
 func physics_update(_delta: float) -> void:
 	if actor.is_on_floor():
-		var move_direction = actor.get_movement_direction()
+		var move_direction = actor.player_movement.get_movement_direction()
 		if move_direction.length() > 0:
 			if Input.is_action_pressed("sprint"):
 				state_machine.change_state("SprintingState")

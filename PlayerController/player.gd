@@ -9,13 +9,14 @@ extends CharacterBody3D
 @onready var camera: Camera3D = $Head/Eyes/Camera3D
 @onready var stand_up_check: RayCast3D = $StandUpCheck
 @onready var controlabble_node_state_machine: ControllableNodeStateMachine = $ControlabbleNodeStateMachine
+@onready var player_movement: Node = $PlayerMovement
 
 # Constants
 const WALK_SPEED := 3.0
 const SPRINT_SPEED := 5.0
 const CROUCH_SPEED := 1.0
 const CROUCH_DEPTH := -0.9
-const JUMP_VELOCITY := 4.0
+const JUMP_VELOCITY := 2.5
 const BASE_FOV := 90.0
 const MOUSE_SENSITIVITY := 0.2
 const IDLE_HEIGHT := 1.8
@@ -43,6 +44,15 @@ var head_bobbing_index := 0.0
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	player_movement.player = self
+	if InputManager:
+		InputManager.connect("move_input", Callable(self, "_on_move_input"))
+		InputManager.connect("jump_pressed", Callable(self, "_on_jump_pressed"))
+		InputManager.connect("interact_pressed", Callable(self, "_on_interact_pressed"))
+	else:
+		push_error("InputManager singleton not found!")
+	if InputManager.has_signal("move_input"):
+		print("InputManager is global and ready")
 
 
 func _input(event: InputEvent) -> void:
@@ -56,47 +66,13 @@ func _input(event: InputEvent) -> void:
 		controlabble_node_state_machine.current_state.handle_input(event)
 
 func _physics_process(delta: float) -> void:
-	current_speed = lerp(current_speed, target_speed, delta * 10.0)
-	handle_movement(delta)
 	handle_camera_animation(delta)
-	move_and_slide()
 
 func handle_mouse_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		rotate_y(deg_to_rad(-event.relative.x * MOUSE_SENSITIVITY))
 		head.rotate_x(deg_to_rad(-event.relative.y * MOUSE_SENSITIVITY))
 		head.rotation.x = clamp(head.rotation.x, deg_to_rad(-85), deg_to_rad(85))
-
-func handle_movement(delta: float) -> void:
-	handle_gravity(delta)
-	handle_horizontal_movement(delta)
-
-
-func handle_gravity(delta: float) -> void:
-	if not is_on_floor():
-		var gravity_multiplier := 1.5 if velocity.y < 0 else 1.0
-		velocity += get_gravity() * delta * gravity_multiplier
-
-		
-func get_movement_direction() -> Vector3:
-	var input_dir = Input.get_vector("left", "right", "forward", "backwards")
-	if input_dir == Vector2.ZERO:
-		return Vector3.ZERO
-	return (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-
-
-func handle_horizontal_movement(delta: float) -> void:
-	input_direction = Input.get_vector("left", "right", "forward", "backwards")
-	var target_direction = (transform.basis * Vector3(input_direction.x, 0, input_direction.y)).normalized()
-	
-	move_direction = move_direction.lerp(target_direction, delta * LERP_SPEED)
-	
-	if move_direction:
-		velocity.x = move_direction.x * current_speed
-		velocity.z = move_direction.z * current_speed
-	else:
-		velocity.x = move_toward(velocity.x, 0, current_speed)
-		velocity.z = move_toward(velocity.z, 0, current_speed)
 
 func can_stand_up() -> bool:
 	return not stand_up_check.is_colliding()

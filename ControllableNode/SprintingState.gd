@@ -9,7 +9,7 @@ func enter() -> void:
 	actor.head_bobbing_current_speed = actor.HEAD_BOBBING_SPRINT_SPEED
 
 func physics_update(_delta: float) -> void:
-	var move_direction = actor.get_movement_direction()
+	var move_direction = actor.player_movement.get_movement_direction()
 	
 	if not actor.is_on_floor():
 		state_machine.change_state("AirState")
@@ -28,5 +28,4 @@ func physics_update(_delta: float) -> void:
 
 func handle_input(event: InputEvent) -> void:
 	if event.is_action_pressed("jump"):
-		actor.velocity.y = actor.JUMP_VELOCITY
 		state_machine.change_state("AirState")
